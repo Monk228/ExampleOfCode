@@ -1,0 +1,50 @@
+using System;
+
+namespace FinderOfSquare
+{
+    public class Circle
+    {
+        public double Square(double r)
+        {
+            double S;
+            S = Math.PI * (Math.Pow(r, 2));
+            return S;
+        }
+
+    }
+    public class Triangle
+    {
+        public double Square(double a, double b, double c)
+        {
+            double S, p, P;
+
+            P = a + b + c;
+            p = P / 2;
+            S = Math.Sqrt(p * (p - a) * (p - b) * (p - c));
+            return S;
+        }
+        public bool isRectangular(double a, double b, double c)
+        {
+            if ((Math.Pow(a, 2) == (Math.Pow(b, 2) + Math.Pow(c, 2))) || (Math.Pow(b, 2) == (Math.Pow(a, 2) + Math.Pow(c, 2))) || (Math.Pow(c, 2) == (Math.Pow(a, 2) + Math.Pow(b, 2))))
+            {
+                return true;
+            }
+            else return false;
+        }
+    }
+    public class SquareOfWhat
+    {
+        public double Square(double r)
+        {
+            Circle circle = new Circle();
+            return circle.Square(r);
+
+        }
+        public double Square(double a, double b, double c)
+        {
+            Triangle triangle = new Triangle();
+            return triangle.Square(a, b, c);
+
+        }
+    }
+}
