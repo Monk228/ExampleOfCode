@@ -1,0 +1,82 @@
+static Dictionary<string, string> data = new Dictionary<string, string>();
+      
+        public static string CleanText(string text)
+        {
+            return Regex.Replace(text, @"<[^>]+>", string.Empty);
+
+        }
+        public static List<string> TakeHrefs(string text)
+        {
+            List<string> result = new List<string>();
+          
+           
+            var full = new Regex(@"href=\S(?<link>\S+)\x22");
+
+           
+           
+           for(var m = full.Match(text); m.Success; m = m.NextMatch())
+            {
+
+                string res = m.Groups["link"].Value;
+
+                if (!m.Groups["link"].Value.Contains("http") || !m.Groups["link"].Value.Contains("https"))
+                {
+                    res = "http://facebook.com" + res;
+                    result.Add(res);
+                }
+                else
+                {
+                    result.Add(res);
+                }
+                
+            }
+            
+
+            return result ;
+
+
+        }
+        public static Dictionary<string, string> TakeUserInfo(string text)
+        {
+            if (!text.Contains("<")) return null ;
+
+            var full = new Regex(@"href=\S\S(?<link>\S+)\&\S+\x22\S(?<name>\S+\s\S+)<");
+
+            var match = full.Match(text);
+
+            if (match.Success == false) return null;
+
+            var nameGroup = match.Groups["name"].Value;
+            var linkGroup = match.Groups["link"].Value;
+
+           
+
+            if (linkGroup.Contains("profile.php"))
+            {
+                full = new Regex(@"id=(?<link>\S+)\x26");
+
+                UseRegex(full, ref linkGroup);
+            }
+            else
+            {
+                full = new Regex(@"(?<link>\S+)\x3F");
+
+                UseRegex(full, ref linkGroup);
+            }
+
+
+            data.Add(nameGroup, linkGroup);
+
+            return data;
+        }
+        private static void UseRegex(Regex regex, ref string linkGroup)
+        {
+            var match = regex.Match(linkGroup);
+
+            if (match.Success == false) return;
+           
+            linkGroup = match.Groups["link"].Value;
+
+           
+
+        }
