@@ -1,0 +1,52 @@
+    [Route("[controller]")]
+    public class MatchRelevantController : Controller
+    {
+        ContextForApi data = new ContextForApi(StargateDbContext.CreateDbContext(Startup.StargateDbConnectionString));
+
+        [HttpGet]
+        public IActionResult Index()
+        {
+            ViewBag.Location = data.GetLocations();
+
+            ViewBag.JobTitle = data.GetJobs();
+
+            ViewBag.Industry = data.GetIndustries();
+
+            return View();
+        }
+     
+        [HttpPost]
+        public List<User> Find(string locId, string jobId, string indId)
+        {
+            Dictionary<string, long> guid = new Dictionary<string, long>();
+            
+
+            if (locId != null)
+            {
+                guid.Add("location", Convert.ToInt64(locId));
+            }
+            if (jobId != null)
+            {
+                guid.Add("job", Convert.ToInt64(jobId));
+            }
+            if (indId != null)
+            {
+                guid.Add("industry", Convert.ToInt64(indId));
+            }
+
+            ViewBag.Location = data.GetLocations();
+
+            ViewBag.JobTitle = data.GetJobs();
+
+            ViewBag.Industry = data.GetIndustries();
+      
+            
+            return data.GetUsers(guid);
+           
+        }              
+        }
+
+   
+
+   
+
